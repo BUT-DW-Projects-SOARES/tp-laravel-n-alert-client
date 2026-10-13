@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Alert;
 
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -15,12 +17,26 @@ class Listing extends Component
     public function render()
     {
         $alerts = [];
+        $errors = [];
         if (!empty($this->authToken)) {
-            $alerts = Http::withToken($this->authToken)
-                ->get('https://laravel.issler.ens.mmi-unistra.fr/alert/public/api/alert')
-                ->json();
+            try {
+                $alerts = Http::throw()
+                    ->withToken($this->authToken)
+                    ->get('https://laravel.issler.ens.mmi-unistra.fr/alert/public/api/alert')
+                    ->json();
+            } catch (ConnectionException $e) {
+                $errors[] = 'can\'t connect';
+            } catch (RequestException $e) {
+                if ($e->response->notFound()) {
+                    $errors[] = 'not found';
+                } elseif ($e->response->unauthorized() || $e->response->forbidden()) {
+                    $errors[] = 'bad auth';
+                } else {
+                    $errors[] = 'unknown error';
+                }
+            }
         }
-        return view('livewire.alert.listing', ['alerts' => $alerts]);
+        return view('livewire.alert.listing', ['alerts' => $alerts, 'errors' => $errors]);
     }
 
     #[On('auth-token-updated')]
