@@ -7,6 +7,9 @@
         <div>
             <livewire:alert.listing />
         </div>
+        <div>
+            <livewire:contact.listing />
+        </div>
     </div>
 
 </x-layout.base>
