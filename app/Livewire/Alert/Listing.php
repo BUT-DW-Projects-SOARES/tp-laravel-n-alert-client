@@ -22,7 +22,7 @@ class Listing extends Component
             try {
                 $alerts = Http::throw()
                     ->withToken($this->authToken)
-                    ->get('https://laravel.issler.ens.mmi-unistra.fr/alert/public/api/alert')
+                    ->get(config('remote_api.base_url') . '/alert')
                     ->json();
             } catch (ConnectionException $e) {
                 $errors[] = 'can\'t connect';
