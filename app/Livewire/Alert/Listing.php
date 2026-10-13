@@ -8,27 +8,22 @@ use Livewire\Component;
 
 class Listing extends Component
 {
-    public bool $hasToken = false;
-
-    public array $alerts = [];
+    public ?string $authToken = null;
 
     public function render()
     {
-        return view('livewire.alert.listing');
+        $alerts = [];
+        if (!empty($this->authToken)) {
+            $alerts = Http::withToken($this->authToken)
+                ->get('https://laravel.issler.ens.mmi-unistra.fr/alert/public/api/alert')
+                ->json();
+        }
+        return view('livewire.alert.listing', ['alerts' => $alerts]);
     }
 
     #[On('auth-token-updated')]
     public function authTokenUpdated(?string $token)
     {
-        $this->hasToken = !empty($token);
-
-        if ($this->hasToken) {
-            $response = Http::withToken($token)
-                ->get('https://laravel.issler.ens.mmi-unistra.fr/alert/public/api/alert')
-                ->json();
-            $this->alerts = $response;
-        } else {
-            $this->alerts = [];
-        }
+        $this->authToken = $token;
     }
 }

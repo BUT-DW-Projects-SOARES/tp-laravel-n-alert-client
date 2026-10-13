@@ -1,5 +1,5 @@
 <div>
-    @if ($hasToken)
+    @if (!empty($authToken))
         @if (!empty($alerts))
             <ul>
                 @foreach ($alerts as $alert)
