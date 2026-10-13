@@ -14,5 +14,8 @@ class Auth extends Component
         return view('livewire.auth');
     }
 
-    public function save() {}
+    public function save()
+    {
+        $this->dispatch('auth-token-updated', $this->token);
+    }
 }
