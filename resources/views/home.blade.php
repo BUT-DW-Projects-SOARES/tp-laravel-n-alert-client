@@ -10,6 +10,9 @@
         <div>
             <livewire:contact.listing />
         </div>
+        <div>
+            <livewire:contact.create />
+        </div>
     </div>
 
 </x-layout.base>
