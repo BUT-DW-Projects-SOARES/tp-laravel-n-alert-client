@@ -3,11 +3,13 @@
 namespace App\Livewire\Alert;
 
 use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Listing extends Component
 {
+    #[Locked]
     public ?string $authToken = null;
 
     public function render()
