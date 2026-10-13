@@ -20,9 +20,7 @@ class Listing extends Component
         $errors = [];
         if (!empty($this->authToken)) {
             try {
-                $alerts = Http::throw()
-                    ->baseUrl(config('remote_api.base_url'))
-                    ->withToken($this->authToken)
+                $alerts = Http::remote_api($this->authToken)
                     ->get('/alert')
                     ->json();
             } catch (ConnectionException $e) {
