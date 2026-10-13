@@ -7,7 +7,7 @@ use Livewire\Component;
 class Auth extends Component
 {
 
-    public ?string $token;
+    public ?string $token = null;
 
     public function render()
     {
