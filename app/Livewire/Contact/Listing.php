@@ -51,4 +51,7 @@ class Listing extends Component
     {
         $this->authToken = $token;
     }
+
+    #[On('contact-created')]
+    public function refresh() {}
 }
